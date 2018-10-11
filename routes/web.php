@@ -102,6 +102,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role']], function (
 
     // TIPE GALON
     Route::get('/tipe-galon', 'web\TipeGalonController@index')->name('admin.tipegalon');
+    Route::post('/tipe-galon', 'web\TipeGalonController@store')->name('admin.tipegalon.store');
+    Route::get('/tipe-galon/{id}/setnonactive', 'web\TipeGalonController@setnonactive')->name('admin.tipegalon.setnonactive');
+    Route::get('/tipe-galon/{id}/restore', 'web\TipeGalonController@restore')->name('admin.tipegalon.restore');
 
 });
 

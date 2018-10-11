@@ -183,4 +183,31 @@
 
     </div>
 
+
+    <script type="text/javascript">
+
+        // SMOOTH SCROLLING
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // BACK TO TOP SCROLLING FUNCTION
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("btnToTop").style.display = "block";
+            } else {
+                document.getElementById("btnToTop").style.display = "none";
+            }
+        }
+        
+    </script>
+
 @endsection

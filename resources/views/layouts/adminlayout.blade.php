@@ -148,6 +148,7 @@
 		<script type="text/javascript" src="{{ asset('/js/bootstrap.min.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('/js/mdb.min.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('/js/datatables.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('/js/sweetalert.min.js') }}"></script>
 		<script type="text/javascript">
 			var serverside_klien = '{{ route('serverside-klien') }}';
 			var serverside_klien_pendaftar = '{{ route('serverside-klien-pendaftar') }}';
