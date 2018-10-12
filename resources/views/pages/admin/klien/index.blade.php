@@ -98,4 +98,50 @@
 		</div>
 	</div>
 
+
+    <script type="text/javascript">
+        
+        function suspendklien(klien_id) {
+            swal({
+                title: "Anda yakin?",
+                text: "Klien ini akan disuspend",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: 'klien/'+klien_id+'/set-suspend',
+                        type: 'GET',
+                        beforeSend: function(){
+                            swal({
+                                title: "Mohon tunggu",
+                                text: "data sedang diproses...",
+                                icon: "warning",
+                                buttons: false,
+                                closeOnEsc: false
+                            });
+                        },
+                        success: function(param){
+                            if(param=="success"){
+                                swal({
+                                   title: "Berhasil",
+                                   text: "Klien berhasil di suspend",
+                                   icon: "success"
+                                })
+                                .then(() => {
+                                    location.reload();
+                                });
+                            }
+                        },
+                        error: function() {
+                            swal.close();
+                        }
+                    });
+                }
+            });
+        }
+
+    </script>
 @endsection

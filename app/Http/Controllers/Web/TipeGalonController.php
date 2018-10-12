@@ -48,7 +48,7 @@ class TipeGalonController extends Controller
         $tipegalon->status = 1;
         $tipegalon->save();
 
-        $request->session()->flash('alert-success', 'Tipe galon berhasil diaktfkan');
+        $request->session()->flash('alert-success', 'Tipe galon berhasil diaktifkan');
         return redirect()->route('admin.tipegalon');
     }
 }
