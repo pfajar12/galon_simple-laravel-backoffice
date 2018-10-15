@@ -18,6 +18,12 @@ class KlienController extends Controller
     	return view('pages/admin/klien/index', ['page'=>$this->page]);
     }
 
+    function show_detail($id='')
+    {
+    	$data = User::select('fullname', 'email', 'status', 'address', 'phone', 'lat', 'long', 'created_at')->where('id', $id)->first();
+    	return view('pages/admin/klien/detail', ['page'=>$this->page, 'klien'=>$data, 'klien_id'=>$id]);
+    }
+
     function set_aktif($id='', Request $request)
     {
         $klien = User::findOrFail($id);

@@ -7,6 +7,7 @@
 		<link rel="stylesheet" type="text/css" href="{{ asset('/css/font-awesome.css') }}">
 		<link rel="stylesheet" type="text/css" href="{{ asset('/css/style.css') }}">
 		<link rel="stylesheet" type="text/css" href="{{ asset('/css/datatables.min.css') }}">
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpYb4RUEdaNF0D2R227blorDqp4v0L4Ug" type="text/javascript"></script>
 		<script type="text/javascript" src="{{ asset('/js/jquery-3.3.1.min.js') }}"></script>
 	</head>
 

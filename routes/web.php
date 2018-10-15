@@ -35,8 +35,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role']], function (
 
 	// KLIEN
     Route::get('/klien', 'web\KlienController@index')->name('admin.klien');
+    Route::get('/klien/{id}/view', 'web\KlienController@show_detail')->name('admin.klien.view');
     Route::get('/klien/{id}/set-aktif', 'web\KlienController@set_aktif')->name('admin.klien.setaktif');
-	Route::get('/klien/{id}/set-suspend', 'web\KlienController@set_suspend')->name('admin.klien.setsuspend');
+    Route::get('/klien/{id}/set-suspend', 'web\KlienController@set_suspend')->name('admin.klien.setsuspend');
 
 	Route::get('/serverside-klien', [
         'as'   => 'serverside-klien',

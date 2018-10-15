@@ -17,13 +17,24 @@ class RegisterController extends Controller
             'password' 	=> 'required|min:6|max:32',
         ]);
 
+        if($request->json('lat')==null){
+            $latitude   = 0;
+            $longitude  = 0;
+        }
+        else{
+            $latitude   = $request->json('lat');
+            $longitude  = $request->json('long');
+        }
+
         $user = new User;
-        $user->fullname = $request->json('fullname');
-        $user->email = $request->json('email');
-    	$user->password = bcrypt($request->json('password'));
-    	$user->role = $request->json('role');
-    	$user->status = 0;
-    	$user->deposit = 0;
+        $user->fullname     = $request->json('fullname');
+        $user->email        = $request->json('email');
+    	$user->password     = bcrypt($request->json('password'));
+        $user->role         = $request->json('role');
+        $user->lat          = $latitude;
+    	$user->long         = $longitude;
+    	$user->status       = 0;
+    	$user->deposit      = 0;
     	$user->save();
 
     	if($user->save()){
