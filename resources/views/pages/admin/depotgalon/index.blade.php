@@ -98,4 +98,50 @@
 		</div>
 	</div>
 
+    <script type="text/javascript">
+        
+        function suspenddepot(depot_id) {
+            swal({
+                title: "Anda yakin?",
+                text: "Depot galon ini akan disuspend",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: 'depot-galon/'+depot_id+'/set-suspend',
+                        type: 'GET',
+                        beforeSend: function(){
+                            swal({
+                                title: "Mohon tunggu",
+                                text: "data sedang diproses...",
+                                icon: "warning",
+                                buttons: false,
+                                closeOnEsc: false
+                            });
+                        },
+                        success: function(param){
+                            if(param=="success"){
+                                swal({
+                                   title: "Berhasil",
+                                   text: "Depot galon berhasil di suspend",
+                                   icon: "success"
+                                })
+                                .then(() => {
+                                    location.reload();
+                                });
+                            }
+                        },
+                        error: function() {
+                            swal.close();
+                        }
+                    });
+                }
+            });
+        }
+
+    </script>
+
 @endsection

@@ -146,8 +146,8 @@ $(document).ready(function() {
                 "orderable": false,
                 "render": function ( data, type, row, meta ) {
                     return '\
-                        <a href="klien/'+row['id']+'/view" class="btn btn-info btn-md"><i class="fa fa-search mr-1"></i> Detail</a>\
-                        <a onclick="suspendklien('+row['id']+')" class="btn btn-warning btn-md"><i class="fa fa-times mr-1"></i> Suspend</a>\
+                        <a href="depot-galon/'+row['id']+'/view" class="btn btn-info btn-md"><i class="fa fa-search mr-1"></i> Detail</a>\
+                        <a onclick="suspenddepot('+row['id']+')" class="btn btn-warning btn-md"><i class="fa fa-times mr-1"></i> Suspend</a>\
                     ';
                 }
             }
@@ -186,7 +186,7 @@ $(document).ready(function() {
                 "render": function ( data, type, row, meta ) {
                     return '\
                         <a href="depot-galon/'+row['id']+'/view" class="btn btn-info btn-md"><i class="fa fa-search mr-1"></i> Detail</a>\
-                        <a onclick="suspendklien('+row['id']+')" class="btn btn-warning btn-md"><i class="fa fa-times mr-1"></i> Suspend</a>\
+                        <a href="depot-galon/'+row['id']+'/set-aktif" class="btn btn-secondary btn-md"><i class="fa fa-check mr-1"></i> Set Aktif</a>\
                     ';
                 }
             }
@@ -217,8 +217,7 @@ $(document).ready(function() {
                 "orderable": false,
                 "render": function ( data, type, row, meta ) {
                     return '\
-                        <a href="depot-galon/'+row['id']+'/view" class="btn btn-info btn-md"><i class="fa fa-search mr-1"></i> Detail</a>\
-                        <a onclick="suspendklien('+row['id']+')" class="btn btn-warning btn-md"><i class="fa fa-times mr-1"></i> Suspend</a>\
+                        <a href="depot-galon/'+row['id']+'/set-aktif" class="btn btn-secondary btn-md"><i class="fa fa-check mr-1"></i> Set Aktif</a>\
                     ';
                 }
             }

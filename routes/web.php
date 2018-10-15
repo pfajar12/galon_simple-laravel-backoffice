@@ -72,6 +72,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role']], function (
 
     // DEPOT GALON
     Route::get('/depot-galon', 'web\DepotGalonController@index')->name('admin.depotgalon');
+    Route::get('/depot-galon/{id}/view', 'web\DepotGalonController@show_detail')->name('admin.depotgalon.view');
+    Route::get('/depot-galon/{id}/set-aktif', 'web\DepotGalonController@set_aktif')->name('admin.depotgalon.setaktif');
+    Route::get('/depot-galon/{id}/set-suspend', 'web\DepotGalonController@set_suspend')->name('admin.depotgalon.setsuspend');
 	
     Route::get('/serverside-depotgalon', [
         'as'   => 'serverside-depotgalon',

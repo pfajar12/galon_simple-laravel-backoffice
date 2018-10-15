@@ -26,7 +26,7 @@
 
 	                <!-- Brand -->
 	                <a class="navbar-brand waves-effect ml-3">
-	                    <h4 class="text-white"><strong>{{ ucwords(str_replace('_', ' ', $page)) }}</strong></h4>
+	                    <h4 class="text-white"><strong>{{ ucwords(str_replace('-', ' ', $page)) }}</strong></h4>
 	                </a>
 
 	                <!-- Collapse -->
