@@ -20,8 +20,8 @@ class DepotGalonController extends Controller
 
     function show_detail($id='')
     {
-        $data = User::select('fullname', 'email', 'status', 'address', 'phone', 'lat', 'long', 'created_at')->where('id', $id)->first();
-        return view('pages/admin/klien/detail', ['page'=>$this->page, 'klien'=>$data, 'klien_id'=>$id]);
+        $data = User::select('fullname', 'email', 'status', 'address', 'deposit', 'phone', 'lat', 'long', 'created_at')->findOrFail($id);
+        return view('pages/admin/depotgalon/detail', ['page'=>$this->page, 'galon'=>$data, 'galon_id'=>$id]);
     }
 
     function set_aktif($id='', Request $request)

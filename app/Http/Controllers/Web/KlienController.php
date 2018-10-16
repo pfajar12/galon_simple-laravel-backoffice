@@ -20,7 +20,7 @@ class KlienController extends Controller
 
     function show_detail($id='')
     {
-    	$data = User::select('fullname', 'email', 'status', 'address', 'phone', 'lat', 'long', 'created_at')->where('id', $id)->first();
+    	$data = User::select('fullname', 'email', 'status', 'address', 'phone', 'lat', 'long', 'created_at')->findOrFail($id);
     	return view('pages/admin/klien/detail', ['page'=>$this->page, 'klien'=>$data, 'klien_id'=>$id]);
     }
 
