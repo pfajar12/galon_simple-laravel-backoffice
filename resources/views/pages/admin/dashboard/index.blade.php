@@ -55,7 +55,7 @@
         <div class="col-md-12 mb-4">
             <div class="row">
 
-                <div class="col-md-3">
+                <div class="col-sm-6 mb-sm-3 col-xl-3">
                     <div class="card">
                         <div class="card-body">
                             <div class="col-md-12">
@@ -75,7 +75,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-sm-6 mb-sm-3 col-xl-3">
                     <div class="card">
                         <div class="card-body">
                             <div class="col-md-12">
@@ -95,7 +95,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-sm-6 mb-sm-3 col-xl-3">
                     <div class="card">
                         <div class="card-body">
                             <div class="col-md-12">
@@ -106,7 +106,7 @@
                                     <div class="col-md-9" style="vertical-align: middle;">
                                         <div class="row">
                                             <div class="col-md-12">{{ $approved_depot_galon }}</div>
-                                            <div class="col-md-12">Depot Galon Terdaftar</div>
+                                            <div class="col-md-12">Depot Terdaftar</div>
                                         </div>
                                     </div>
                                 </div>
@@ -115,7 +115,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-sm-6 mb-sm-3 col-xl-3">
                     <div class="card">
                         <div class="card-body">
                             <div class="col-md-12">
@@ -126,7 +126,7 @@
                                     <div class="col-md-9" style="vertical-align: middle;">
                                         <div class="row">
                                             <div class="col-md-12">{{ $today_depot_galon }}</div>
-                                            <div class="col-md-12">Depot Galon Mendaftar Hari Ini</div>
+                                            <div class="col-md-12">Depot Mendaftar Hari Ini</div>
                                         </div>
                                     </div>
                                 </div>
