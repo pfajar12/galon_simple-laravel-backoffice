@@ -95,7 +95,7 @@
 		                </a>
 	                @endif
 
-	                @if ($page == 'country')
+	                {{-- @if ($page == 'country')
 		                <a href="{{ route('admin.dashboard') }}" class="list-group-item waves-effect active">
 		                    <i class="fa fa-money mr-3"></i>Deposit
 		                </a>
@@ -103,7 +103,7 @@
 	                	<a href="{{ route('admin.dashboard') }}" class="list-group-item list-group-item-action waves-effect">
 		                    <i class="fa fa-money mr-3"></i>Deposit
 		                </a>
-	                @endif
+	                @endif --}}
 
 	                @if ($page == 'country')
 		                <a href="{{ route('admin.dashboard') }}" class="list-group-item waves-effect active">

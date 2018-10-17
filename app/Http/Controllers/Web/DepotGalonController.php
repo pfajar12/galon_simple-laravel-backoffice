@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Web;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\User;
+use Carbon\Carbon;
+use DB;
 
 class DepotGalonController extends Controller
 {
@@ -40,5 +43,39 @@ class DepotGalonController extends Controller
         $klien->status = -1;
         $klien->save();
         return "success";
+    }
+
+    function get_data($id='', Request $request)
+    {
+        $field = $request->field;
+        $deposit = User::select($field)->where('id', $id)->first();
+        return $deposit->deposit;
+    }
+
+    function set_deposit(Request $request)
+    {
+        $id = $request->id;
+        $nilai_deposit = $request->nilai_deposit;
+
+        $get_current_deposit = User::select('deposit')->where('id', $id)->first();
+        $current_deposit = $get_current_deposit->deposit;
+
+        $new_deposit = $current_deposit + $nilai_deposit;
+
+        // set deposit amount
+        $deposit_amount = User::find($id);
+        $deposit_amount->deposit = $new_deposit;
+        $deposit_amount->save();
+
+        // set deposit log
+        DB::table('deposit_log')
+            ->insert([
+                'depot_id' => $id,
+                'approved_by' => Auth::user()->id,
+                'deposit_amount' => $nilai_deposit,
+                'created_at' => Carbon::now()
+            ]);
+
+        return $new_deposit;
     }
 }

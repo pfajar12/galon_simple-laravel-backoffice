@@ -17,18 +17,30 @@
                                 <label>Nama Lengkap</label>
                                 <input type="text" class="form-control" value="{{ $galon->fullname }}" readonly="readonly">
                             </div>
+
                             <div class="form-group">
                                 <label>Email</label>
                                 <input type="text" class="form-control" value="{{ $galon->email }}" readonly="readonly">
                             </div>
+
                             <div class="form-group">
                                 <label>Status</label>
                                 <input type="text" class="form-control" value="{{ $galon->status==1 ? 'aktif' : ($galon->status==0 ? 'tidak aktif' : 'tersuspend') }}" readonly="readonly">
                             </div>
+
                             <div class="form-group">
                                 <label>Nilai Deposit</label>
-                                <input type="text" class="form-control" value="{{ $galon->deposit }}" readonly="readonly">
+                                @if($galon->status==1)
+                                    <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#depositModal">
+                                        <i class="fa fa-plus"></i> Tambah deposit
+                                    </button>
+                                @endif
+                                <button class="btn btn-info btn-sm" type="button" data-toggle="modal" data-target="#logDepositModal" onclick="get_log_deposit({{ $galon_id }})">
+                                        <i class="fa fa-info-circle"></i> Lihat log deposit
+                                    </button>
+                                <input type="text" class="form-control" id="deposit-amount" readonly="readonly">
                             </div>
+
                             <div class="form-group">
                                 <label>Alamat</label>
                                 <textarea class="form-control" readonly="readonly" rows="5">{{ $galon->address }}</textarea>
@@ -40,10 +52,12 @@
                                 <label>No. Kontak</label>
                                 <input type="text" class="form-control" value="{{ $galon->phone }}" readonly="readonly">
                             </div>
+
                             <div class="form-group">
                                 <label>Tanggal Mendaftar</label>
                                 <input type="text" class="form-control" value="{{ $galon->created_at }}" readonly="readonly">
                             </div>
+
                             <div class="form-group">
                                 <label>Lokasi</label>
                                 @if($galon->lat==null)
@@ -69,8 +83,136 @@
 		</div>
 	</div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="depositModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Tambah nilai deposit</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Nilai deposit</label>
+                        <input type="text" name="nilai_deposit" id="nilai_deposit" onkeypress="return hanyaAngka(event)" class="form-control" placeholder="contoh : 800000">
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="save_deposit()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="logDepositModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Log deposit</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Depot Galon</th>
+                                    <th>Deposit</th>
+                                    <th>Ditambah/Disetujui Oleh</th>
+                                    <th>Waktu</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-deposit-log-content">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="save_deposit()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script type="text/javascript">
+
+        $(document).ready(function() {
+            
+            get_data();
+
+        });
+
+        function get_data() {
+            var id = {{ $galon_id }}
+            $.ajax({
+                url: '../'+id+'/get-data',
+                type: 'GET',
+                data: {field: 'deposit'},
+                beforeSend: function(){
+                    $('#deposit-amount').val('sedang proses...')
+                },
+                success: function(param){
+                    $('#deposit-amount').val(param)
+                },
+                error: function() {
+                    swal.close();
+                }
+            });
+        }
+
+        function save_deposit() {
+            var id = {{ $galon_id }}
+            var nilai_deposit = $('#nilai_deposit').val();
+
+            if(nilai_deposit==null){
+                swal("Peringatan!", "Nilai deposit tidak boleh kosong", "warning");
+            }
+            else{
+                $.ajax({
+                    url: '{{ route('admin.depotgalon.setdeposit', ['id'=>$galon_id]) }}',
+                    type: 'POST',
+                    data: {id: id, nilai_deposit: nilai_deposit, "_token": "{{ csrf_token() }}"},
+                    beforeSend: function(){
+                        swal({
+                            title: "Please Wait",
+                            text: "Processing data...",
+                            icon: "warning",
+                            buttons: false,
+                            closeOnEsc: false
+                        });
+                    },
+                    success: function(param){
+                        swal({
+                            title: "",
+                            text: "tambah nilai deposit berhasil",
+                            icon: "success"
+                        });
+
+                        get_data();
+                        $('#depositModal').modal('toggle');
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log(xhr.status);
+                        console.log(thrownError);
+                    }
+                });
+            }
+        }
 
         function suspenddepotgalon(depot_id) {
             swal({
@@ -112,6 +254,45 @@
                     });
                 }
             });
+        }
+
+        function get_log_deposit(id) {
+            $.ajax({
+                url: '{{ route('admin.depotgalon.setdeposit', ['id'=>$galon_id]) }}',
+                type: 'POST',
+                data: {id: id, nilai_deposit: nilai_deposit, "_token": "{{ csrf_token() }}"},
+                beforeSend: function(){
+                    swal({
+                        title: "Please Wait",
+                        text: "Processing data...",
+                        icon: "warning",
+                        buttons: false,
+                        closeOnEsc: false
+                    });
+                },
+                success: function(param){
+                    swal({
+                        title: "",
+                        text: "tambah nilai deposit berhasil",
+                        icon: "success"
+                    });
+
+                    get_data();
+                    $('#depositModal').modal('toggle');
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(xhr.status);
+                    console.log(thrownError);
+                }
+            });
+        }
+        }
+
+        function hanyaAngka(evt){
+            var charCode=(evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && charCode != 46 && (charCode < 48 || charCode > 57 ))
+            return false;
+            return true;
         }
         
         // MAP
