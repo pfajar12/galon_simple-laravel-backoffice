@@ -293,4 +293,41 @@ $(document).ready(function() {
     });
 
 
+    // LOG DEPOSIT DATATABLE SERVERSIDE
+    $('#datatable-log-deposit').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: serverside_log_deposit,
+        columnDefs: [
+            {
+                "targets": 0,
+                "orderable": true,
+                "render": function ( data, type, row ) {
+                    return row['depot_name'];
+                },
+            },
+            {
+                "targets": 1,
+                "orderable": true,
+                "render": function ( data, type, row ) {
+                    return row['deposit_amount'];
+                },
+            },
+            {
+                "targets": 2,
+                "orderable": true,
+                "render": function ( data, type, row ) {
+                    return row['approved_by'];
+                },
+            },
+            {
+                "targets": 3,
+                "orderable": true,
+                "render": function ( data, type, row, meta ) {
+                    return row['created_at'];
+                }
+            }
+        ]
+    });
+
 });

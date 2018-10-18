@@ -127,8 +127,7 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>Depot Galon</th>
-                                    <th>Deposit</th>
+                                    <th>Jumlah Deposit</th>
                                     <th>Ditambah/Disetujui Oleh</th>
                                     <th>Waktu</th>
                                 </tr>
@@ -143,7 +142,6 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="save_deposit()">Save</button>
                 </div>
             </div>
         </div>
@@ -257,10 +255,10 @@
         }
 
         function get_log_deposit(id) {
+            $('#tbody-deposit-log-content').empty();
             $.ajax({
-                url: '{{ route('admin.depotgalon.setdeposit', ['id'=>$galon_id]) }}',
-                type: 'POST',
-                data: {id: id, nilai_deposit: nilai_deposit, "_token": "{{ csrf_token() }}"},
+                url: '{{ route('admin.logdeposit.perdepot', ['id'=>$galon_id]) }}',
+                type: 'GET',
                 beforeSend: function(){
                     swal({
                         title: "Please Wait",
@@ -271,21 +269,23 @@
                     });
                 },
                 success: function(param){
-                    swal({
-                        title: "",
-                        text: "tambah nilai deposit berhasil",
-                        icon: "success"
-                    });
+                    swal.close();
+                    for(var i=0; i<param.length; i++){
+                        $('#tbody-deposit-log-content').append('\
+                            <tr>\
+                                <td>'+param[i].deposit_amount+'</td>\
+                                <td>'+param[i].fullname+'</td>\
+                                <td>'+param[i].created_at+'</td>\
+                            </tr>\
+                        ')
+                    }
 
-                    get_data();
-                    $('#depositModal').modal('toggle');
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.log(xhr.status);
                     console.log(thrownError);
                 }
             });
-        }
         }
 
         function hanyaAngka(evt){

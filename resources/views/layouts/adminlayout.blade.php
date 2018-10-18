@@ -105,12 +105,12 @@
 		                </a>
 	                @endif --}}
 
-	                @if ($page == 'country')
-		                <a href="{{ route('admin.dashboard') }}" class="list-group-item waves-effect active">
+	                @if ($page == 'log-deposit')
+		                <a href="{{ route('admin.logdeposit') }}" class="list-group-item waves-effect active">
 		                    <i class="fa fa-calendar mr-3"></i>Deposit Log
 		                </a>
 	                @else
-	                	<a href="{{ route('admin.dashboard') }}" class="list-group-item list-group-item-action waves-effect">
+	                	<a href="{{ route('admin.logdeposit') }}" class="list-group-item list-group-item-action waves-effect">
 		                    <i class="fa fa-calendar mr-3"></i>Deposit Log
 		                </a>
 	                @endif
@@ -159,6 +159,7 @@
 			var serverside_depotgalon_tersuspend = '{{ route('serverside-depotgalon-tersuspend') }}';
 			var serverside_registered_client = '{{ route('serverside-registered-client') }}';
 			var serverside_registered_depotgalon = '{{ route('serverside-registered-depotgalon') }}';
+			var serverside_log_deposit = '{{ route('serverside-log-deposit') }}';
 		</script>
 		<script src="{{ asset('/js/airku.js') }}"></script>
 	</body>

@@ -115,5 +115,20 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role']], function (
     Route::get('/tipe-galon/{id}/setnonactive', 'web\TipeGalonController@setnonactive')->name('admin.tipegalon.setnonactive');
     Route::get('/tipe-galon/{id}/restore', 'web\TipeGalonController@restore')->name('admin.tipegalon.restore');
 
+
+    // LOG DEPOSIT
+    Route::get('/log-deposit', 'web\DepositLogController@index')->name('admin.logdeposit');
+    Route::get('/log-deposit/{id}/get', 'web\DepositLogController@get_per_depot')->name('admin.logdeposit.perdepot');
+    
+    Route::get('/serverside-log-deposit', [
+        'as'   => 'serverside-log-deposit',
+        'uses' => function () {
+            $data = DB::table('deposit_log')
+                        ->join('users AS depot', 'deposit_log.depot_id', '=', 'depot.id')
+                        ->join('users AS admin', 'deposit_log.approved_by', '=', 'admin.id')
+                        ->select('depot.fullname AS depot_name', 'deposit_log.deposit_amount', 'admin.fullname AS approved_by', 'deposit_log.created_at');
+            return datatables()->query($data)->toJson();
+        }
+    ]);
 });
 
