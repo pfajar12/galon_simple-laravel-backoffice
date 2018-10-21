@@ -43,6 +43,6 @@ class LoginController extends Controller
         }
 
         // all good so return the token
-        return ApiResponse::response(['success'=>1, 'token'=>$token]);
+        return ApiResponse::response(['success'=>1, 'token'=>$token, 'data'=>Auth::user()]);
     }
 }

@@ -45,8 +45,9 @@ class OrderController extends Controller
     	$data = DB::table('order AS a')
     				->join('users AS b', 'a.provider_id', '=', 'b.id')
     				->join('tipe_galon AS c', 'a.galon_type', '=', 'c.id')
-    				->select('a.id AS order_id', 'a.qty', 'a.delivered_address', 'b.fullname AS depot_name', 'c.galon_type_name')
+    				->select('a.id AS order_id', 'a.qty', 'a.delivered_address', 'a.created_at', 'b.fullname AS depot_name', 'c.galon_type_name')
     				->where('a.client_id', $request->user()->id)
+    				->orderBy('a.created_at', 'desc')
     				->get();
         return ApiResponse::response(['success'=>1, 'order'=>$data]);
     }
@@ -56,8 +57,9 @@ class OrderController extends Controller
     	$data = DB::table('order AS a')
     				->join('users AS b', 'a.client_id', '=', 'b.id')
     				->join('tipe_galon AS c', 'a.galon_type', '=', 'c.id')
-    				->select('a.qty', 'a.delivered_address', 'b.fullname AS client_name', 'c.galon_type_name')
+    				->select('a.id AS order_id', 'a.qty', 'a.delivered_address', 'a.created_at', 'b.fullname AS client_name', 'c.galon_type_name')
     				->where('a.provider_id', $request->user()->id)
+    				->orderBy('a.created_at', 'desc')
     				->get();
         return ApiResponse::response(['success'=>1, 'order'=>$data]);
     }
@@ -134,6 +136,30 @@ class OrderController extends Controller
 	    }
     }
 	    	
+    function order_log_client(Request $request)
+    {
+    	$client_id = $request->user()->id;
+    	$data = DB::table('order_log AS a')
+    				->join('users AS b', 'a.galon_provider_id', '=', 'b.id')
+    				->join('tipe_galon AS c', 'a.galon_type_id', '=', 'c.id')
+    				->select('a.id AS order_log_id', 'a.qty', 'a.delivered_address', 'a.status', 'a.created_at', 'b.fullname AS depot_name', 'c.galon_type_name')
+    				->where('a.client_id', $client_id)
+    				->orderBy('a.created_at', 'desc')
+    				->get();
+        return ApiResponse::response(['success'=>0, 'data'=>$data]);
+    }
 
+    function order_log_depot(Request $request)
+    {
+    	$depot_id = $request->user()->id;
+    	$data = DB::table('order_log AS a')
+    				->join('users AS b', 'a.client_id', '=', 'b.id')
+    				->join('tipe_galon AS c', 'a.galon_type_id', '=', 'c.id')
+    				->select('a.id AS order_log_id', 'a.qty', 'a.delivered_address', 'a.status', 'a.created_at', 'b.fullname AS client_name', 'c.galon_type_name')
+    				->where('a.galon_provider_id', $depot_id)
+    				->orderBy('a.created_at', 'desc')
+    				->get();
+        return ApiResponse::response(['success'=>0, 'data'=>$data]);
+    }
     	
 }
