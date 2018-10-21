@@ -69,30 +69,71 @@ class OrderController extends Controller
 
     	if($request->user()->id == $order->client_id){
     		// insert into order log
-    		// $order_log = new OrderLog;
-    		// $order_log->client_id = $order->client_id;
-    		// $order_log->galon_provider_id = $order->provider_id;
-    		// $order_log->order_date = $order->created_at;
-    		// $order_log->galon_type_id = $order->galon_type;
-    		// $order_log->qty = $order->qty;
-    		// $order_log->delivered_address = $order->delivered_address;
-    		// $order_log->delivered_lat = $order->delivered_lat;
-    		// $order_log->delivered_long = $order->delivered_long;
-    		// $order_log->status = 1;
-    		// $order_log->reason_for_canceling = $request->json('reason_for_canceling');
-    		// $order_log->save();
+    		$order_log 						= new OrderLog;
+    		$order_log->client_id 			= $order->client_id;
+    		$order_log->galon_provider_id 	= $order->provider_id;
+    		$order_log->order_date 			= $order->created_at;
+    		$order_log->galon_type_id 		= $order->galon_type;
+    		$order_log->qty 				= $order->qty;
+    		$order_log->delivered_address 	= $order->delivered_address;
+    		$order_log->delivered_lat 		= $order->delivered_lat;
+    		$order_log->delivered_long 		= $order->delivered_long;
+    		$order_log->status 				= 1;
+    		$order_log->save();
 
     		// kurangi total deposit depot
     		$depot_id = $order->provider_id;
-    		$depot = User::select('deposit')->find($depot_id);
+    		$depot = User::select('id', 'deposit')->find($depot_id);
+    		$total_deposit = $depot->deposit - 500;
 
-	        return ApiResponse::response(['success'=>1, 'message'=>'approve orderan berhasil', 'data'=>$depot]);
+    		$depot->deposit = $total_deposit;
+    		$depot->save();
+
+    		// hapus dari table order
+    		$order->delete();
+
+	        return ApiResponse::response(['success'=>1, 'message'=>'approve orderan berhasil']);
 	    }
 	    else{
 	        return ApiResponse::response(['success'=>0, 'message'=>'anda tidak berhak atas orderan ini']);
 	    }
+    }
+
+    function cancel_order(Request $request)
+    {
+    	$validatedData = $request->validate([
+            'reason_for_cancel' 	=> 'required|string',
+        ]);
+
+    	$order_id = $request->json('order_id');
+    	$reason = $request->json('reason_for_cancel');
+    	$order = Order::find($order_id);
+
+    	if($request->user()->id == $order->client_id){
+    		// insert into order log
+    		$order_log 							= new OrderLog;
+    		$order_log->client_id 				= $order->client_id;
+    		$order_log->galon_provider_id 		= $order->provider_id;
+    		$order_log->order_date 				= $order->created_at;
+    		$order_log->galon_type_id 			= $order->galon_type;
+    		$order_log->qty 					= $order->qty;
+    		$order_log->delivered_address 		= $order->delivered_address;
+    		$order_log->delivered_lat 			= $order->delivered_lat;
+    		$order_log->delivered_long 			= $order->delivered_long;
+    		$order_log->status 					= -1;
+    		$order_log->reason_for_canceling 	= $request->json('reason_for_cancel');
+    		$order_log->save();
+
+    		// hapus dari table order
+    		$order->delete();
+
+	        return ApiResponse::response(['success'=>0, 'message'=>'cancel orderan berhasil']);
+    	}
+    	else{
+	        return ApiResponse::response(['success'=>0, 'message'=>'anda tidak berhak atas orderan ini']);
+	    }
+    }
 	    	
 
-    }
     	
 }

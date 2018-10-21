@@ -24,6 +24,7 @@ Route::group(['middleware' => ['api']], function(){
 		Route::get('/order-list-client', 'api\OrderController@order_list_client');
 		Route::get('/order-list-depot', 'api\OrderController@order_list_depot');
 		Route::post('/approve-order', 'api\OrderController@approve_order');
+		Route::post('/cancel-order', 'api\OrderController@cancel_order');
 
 	});
 
