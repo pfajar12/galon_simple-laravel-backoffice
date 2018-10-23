@@ -13,11 +13,16 @@ Route::group(['middleware' => ['api']], function(){
 	// depot list
 	Route::get('/depot-list', 'api\DepotController@show_list');
 	
+	// search depot
+	Route::post('/search-depot', 'api\OrderController@search_depot');
 
 	Route::group(['middleware' => ['jwt.auth']], function(){
 
-		// view own profile
+		// profile
 		Route::get('/profile', 'api\UserController@profile');
+		Route::post('/profile-update', 'api\UserController@profile_update');
+		Route::post('/change-location', 'api\UserController@change_location');
+		Route::post('/set-galon-type', 'api\UserController@set_galon_type');
 
 		// order
 		Route::post('/order', 'api\OrderController@create_order');

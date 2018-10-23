@@ -69,7 +69,7 @@ class OrderController extends Controller
     	$order_id = $request->json('order_id');
     	$order = Order::find($order_id);
 
-    	if($request->user()->id == $order->client_id){
+    	if($request->user()->id == $order->provider_id){
     		// insert into order log
     		$order_log 						= new OrderLog;
     		$order_log->client_id 			= $order->client_id;
@@ -83,10 +83,18 @@ class OrderController extends Controller
     		$order_log->status 				= 1;
     		$order_log->save();
 
-    		// kurangi total deposit depot
+    		// // kurangi total deposit depot
     		$depot_id = $order->provider_id;
+    		$qty = $order->qty;
     		$depot = User::select('id', 'deposit')->find($depot_id);
-    		$total_deposit = $depot->deposit - 500;
+    		$hasil_deposit = $depot->deposit - (500 * $qty);
+
+    		if($hasil_deposit <= 0){
+    			$total_deposit = 0;
+    		}
+    		else{
+    			$total_deposit = $hasil_deposit;
+    		}
 
     		$depot->deposit = $total_deposit;
     		$depot->save();
@@ -111,7 +119,7 @@ class OrderController extends Controller
     	$reason = $request->json('reason_for_cancel');
     	$order = Order::find($order_id);
 
-    	if($request->user()->id == $order->client_id){
+    	if($request->user()->id == $order->provider_id){
     		// insert into order log
     		$order_log 							= new OrderLog;
     		$order_log->client_id 				= $order->client_id;
@@ -159,6 +167,21 @@ class OrderController extends Controller
     				->where('a.galon_provider_id', $depot_id)
     				->orderBy('a.created_at', 'desc')
     				->get();
+        return ApiResponse::response(['success'=>0, 'data'=>$data]);
+    }
+
+    function search_depot(Request $request)
+    {
+        $lat        = $request->json('lat') ;
+        $long       = $request->json('long');
+        $galon_type = $request->json('galon_type');
+
+        $data = User::query()
+                    ->select('*', DB::raw('( 6371 * acos( cos( radians('.$lat.') ) * cos( radians( lat ) ) * cos( radians( longitude ) - radians('.$long.') ) + sin( radians('.$lat.') ) * sin( radians( lat ) ) ) ) AS distance'))        
+                    ->where('status', 1)
+                    ->where('role', 3)
+                    // ->where('deposit', '>', 3)
+                    ->get();
         return ApiResponse::response(['success'=>0, 'data'=>$data]);
     }
     	
