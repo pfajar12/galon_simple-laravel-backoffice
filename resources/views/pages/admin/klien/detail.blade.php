@@ -42,7 +42,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Lokasi</label>
-                                @if($klien->lat==null)
+                                @if($klien->latitude==null)
                                     <p>klien ini belum set lokasi</p>
                                 @else
                                     <div id="map"></div>
@@ -112,7 +112,7 @@
         
         // MAP
         var mapProp= {
-        center:new google.maps.LatLng({{ $klien->lat }}, {{ $klien->long }}),
+        center:new google.maps.LatLng({{ $klien->latitude }}, {{ $klien->longitude }}),
         zoom:15,
         };
         var map=new google.maps.Map(document.getElementById("map"),mapProp);
@@ -120,7 +120,7 @@
         var marker, i;
 
         marker = new google.maps.Marker({
-            position: new google.maps.LatLng({{ $klien->lat }}, {{ $klien->long }}),
+            position: new google.maps.LatLng({{ $klien->latitude }}, {{ $klien->longitude }}),
             map: map,
             // icon: '../img/marker.png'
         });

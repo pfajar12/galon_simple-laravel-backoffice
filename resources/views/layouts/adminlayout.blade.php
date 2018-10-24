@@ -115,22 +115,22 @@
 		                </a>
 	                @endif
 
-	                @if ($page == 'country')
-		                <a href="{{ route('admin.dashboard') }}" class="list-group-item waves-effect active">
+	                @if ($page == 'order-list')
+		                <a href="{{ route('admin.orderlist') }}" class="list-group-item waves-effect active">
 		                    <i class="fa fa-list mr-3"></i>List Order
 		                </a>
 	                @else
-	                	<a href="{{ route('admin.dashboard') }}" class="list-group-item list-group-item-action waves-effect">
+	                	<a href="{{ route('admin.orderlist') }}" class="list-group-item list-group-item-action waves-effect">
 		                    <i class="fa fa-list mr-3"></i>List Order
 		                </a>
 	                @endif
 
-	                @if ($page == 'country')
-		                <a href="{{ route('admin.dashboard') }}" class="list-group-item waves-effect active">
+	                @if ($page == 'order-log')
+		                <a href="{{ route('admin.orderlog') }}" class="list-group-item waves-effect active">
 		                    <i class="fa fa-calendar mr-3"></i>Order Log
 		                </a>
 	                @else
-	                	<a href="{{ route('admin.dashboard') }}" class="list-group-item list-group-item-action waves-effect">
+	                	<a href="{{ route('admin.orderlog') }}" class="list-group-item list-group-item-action waves-effect">
 		                    <i class="fa fa-calendar mr-3"></i>Order Log
 		                </a>
 	                @endif
@@ -160,6 +160,8 @@
 			var serverside_registered_client = '{{ route('serverside-registered-client') }}';
 			var serverside_registered_depotgalon = '{{ route('serverside-registered-depotgalon') }}';
 			var serverside_log_deposit = '{{ route('serverside-log-deposit') }}';
+			var serverside_order_list = '{{ route('serverside-order-list') }}';
+			var serverside_order_log = '{{ route('serverside-order-log') }}';
 		</script>
 		<script src="{{ asset('/js/airku.js') }}"></script>
 	</body>

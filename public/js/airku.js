@@ -330,4 +330,101 @@ $(document).ready(function() {
         ]
     });
 
+
+    // KLIEN DATATABLE ORDER LIST
+    $('#datatable-order-list').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: serverside_order_list,
+        columnDefs: [
+            {
+                "targets": 0,
+                "orderable": true,
+                "render": function ( data, type, row ) {
+                    return row['client_name'];
+                },
+            },
+            {
+                "targets": 1,
+                "orderable": true,
+                "render": function ( data, type, row ) {
+                    return row['depot_name'];
+                },
+            },
+            {
+                "targets": 2,
+                "orderable": true,
+                "render": function ( data, type, row ) {
+                    return row['galon_type_name'];
+                },
+            },
+            {
+                "targets": 3,
+                "orderable": false,
+                "render": function ( data, type, row, meta ) {
+                    return row['qty'];
+                }
+            },
+            {
+                "targets": 4,
+                "orderable": false,
+                "render": function ( data, type, row, meta ) {
+                    return row['created_at'];
+                }
+            }
+        ]
+    });
+
+
+    // KLIEN DATATABLE ORDER LOG
+    $('#datatable-order-log').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: serverside_order_log,
+        columnDefs: [
+            {
+                "targets": 0,
+                "orderable": true,
+                "render": function ( data, type, row ) {
+                    return row['client_name'];
+                },
+            },
+            {
+                "targets": 1,
+                "orderable": true,
+                "render": function ( data, type, row ) {
+                    return row['depot_name'];
+                },
+            },
+            {
+                "targets": 2,
+                "orderable": true,
+                "render": function ( data, type, row ) {
+                    return row['galon_type_name'];
+                },
+            },
+            {
+                "targets": 3,
+                "orderable": true,
+                "render": function ( data, type, row, meta ) {
+                    return row['qty'];
+                }
+            },
+            {
+                "targets": 4,
+                "orderable": true,
+                "render": function ( data, type, row, meta ) {
+                    return row['order_date'];
+                }
+            },
+            {
+                "targets": 5,
+                "orderable": true,
+                "render": function ( data, type, row, meta ) {
+                    return row['status']==1 ? 'done' : 'canceled';
+                }
+            }
+        ]
+    });
+
 });

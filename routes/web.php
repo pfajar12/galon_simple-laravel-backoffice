@@ -130,5 +130,37 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role']], function (
             return datatables()->query($data)->toJson();
         }
     ]);
+
+
+    // ORDER
+    Route::get('/order-list', 'web\OrderController@index')->name('admin.orderlist');
+
+    Route::get('/serverside-order-list', [
+        'as'   => 'serverside-order-list',
+        'uses' => function () {
+            $data = DB::table('order')
+                        ->join('users AS client', 'order.client_id', '=', 'client.id')
+                        ->join('users AS depot', 'order.provider_id', '=', 'depot.id')
+                        ->join('tipe_galon', 'order.galon_type', '=', 'tipe_galon.id')
+                        ->select('client.fullname AS client_name', 'depot.fullname AS depot_name', 'tipe_galon.galon_type_name', 'order.qty', 'order.created_at');
+            return datatables()->query($data)->toJson();
+        }
+    ]);
+
+
+    // ORDER LOG
+    Route::get('/order-log', 'web\OrderController@order_log')->name('admin.orderlog');
+
+    Route::get('/serverside-order-log', [
+        'as'   => 'serverside-order-log',
+        'uses' => function () {
+            $data = DB::table('order_log')
+                        ->join('users AS client', 'order_log.client_id', '=', 'client.id')
+                        ->join('users AS depot', 'order_log.galon_provider_id', '=', 'depot.id')
+                        ->join('tipe_galon', 'order_log.galon_type_id', '=', 'tipe_galon.id')
+                        ->select('client.fullname AS client_name', 'depot.fullname AS depot_name', 'tipe_galon.galon_type_name', 'order_log.qty', 'order_log.order_date', 'order_log.status');
+            return datatables()->query($data)->toJson();
+        }
+    ]);
 });
 
