@@ -31,8 +31,8 @@ class RegisterController extends Controller
         $user->email        = $request->json('email');
     	$user->password     = bcrypt($request->json('password'));
         $user->role         = $request->json('role');
-        $user->lat          = $latitude;
-    	$user->long         = $longitude;
+        $user->latitude     = $latitude;
+    	$user->longitude    = $longitude;
     	$user->status       = 0;
     	$user->deposit      = 0;
     	$user->save();
