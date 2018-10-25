@@ -176,12 +176,16 @@ class OrderController extends Controller
         $long       = $request->json('long');
         $galon_type = $request->json('galon_type');
 
+        $getId = DB::table('tipe_galon_user')->select('user_id')->where('galon_type_id', $galon_type)->pluck('user_id');
+
         $data = User::query()
-                    ->select('*', DB::raw('( 6371 * acos( cos( radians('.$lat.') ) * cos( radians( lat ) ) * cos( radians( longitude ) - radians('.$long.') ) + sin( radians('.$lat.') ) * sin( radians( lat ) ) ) ) AS distance'))        
+                    ->select('*', DB::raw('( 6371 * acos( cos( radians('.$lat.') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians('.$long.') ) + sin( radians('.$lat.') ) * sin( radians( latitude ) ) ) ) AS distance'))        
                     ->where('status', 1)
                     ->where('role', 3)
-                    // ->where('deposit', '>', 3)
-                    ->get();
+                    ->where('deposit', '>', 0)
+                    ->whereIn('id', $getId)
+                    ->orderBy('distance', 'asc')
+                    ->first();
         return ApiResponse::response(['success'=>0, 'data'=>$data]);
     }
     	

@@ -50,8 +50,8 @@ class UserController extends Controller
 
         $user = User::find($id);
         $user->address = $request->json('address');
-        $user->lat = $request->json('lat');
-        $user->long = $request->json('long');
+        $user->latitude = $request->json('lat');
+        $user->longitude = $request->json('long');
         $user->save();
 
         return ApiResponse::response(['success'=>1, 'message'=>'update lokasi berhasil']);

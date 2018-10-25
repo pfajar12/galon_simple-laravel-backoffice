@@ -11,7 +11,7 @@ class DepotController extends Controller
 {
     function show_list()
     {
-    	$data = User::select('fullname', 'address', 'phone', 'business_license_photo', 'lat', 'long')
+    	$data = User::select('fullname', 'address', 'phone', 'business_license_photo', 'latitude', 'longitude')
     				->where([['role', 3], ['status', 1]])
     				->get();
     	return ApiResponse::response(['success'=>1, 'depot_galon'=>$data]);
