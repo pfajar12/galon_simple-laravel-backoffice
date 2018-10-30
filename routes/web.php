@@ -10,7 +10,7 @@ Auth::routes();
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role']], function () {
 
 	// DASHBOARD
-	Route::get('/dashboard', 'web\DashboardController@index')->name('admin.dashboard');
+	Route::get('/dashboard', 'Web\DashboardController@index')->name('admin.dashboard');
 
     Route::get('/serverside-registered-client', [
         'as'   => 'serverside-registered-client',
@@ -34,10 +34,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role']], function (
 
 
 	// KLIEN
-    Route::get('/klien', 'web\KlienController@index')->name('admin.klien');
-    Route::get('/klien/{id}/view', 'web\KlienController@show_detail')->name('admin.klien.view');
-    Route::get('/klien/{id}/set-aktif', 'web\KlienController@set_aktif')->name('admin.klien.setaktif');
-    Route::get('/klien/{id}/set-suspend', 'web\KlienController@set_suspend')->name('admin.klien.setsuspend');
+    Route::get('/klien', 'Web\KlienController@index')->name('admin.klien');
+    Route::get('/klien/{id}/view', 'Web\KlienController@show_detail')->name('admin.klien.view');
+    Route::get('/klien/{id}/set-aktif', 'Web\KlienController@set_aktif')->name('admin.klien.setaktif');
+    Route::get('/klien/{id}/set-suspend', 'Web\KlienController@set_suspend')->name('admin.klien.setsuspend');
 
 	Route::get('/serverside-klien', [
         'as'   => 'serverside-klien',
@@ -71,12 +71,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role']], function (
 
 
     // DEPOT GALON
-    Route::get('/depot-galon', 'web\DepotGalonController@index')->name('admin.depotgalon');
-    Route::get('/depot-galon/{id}/view', 'web\DepotGalonController@show_detail')->name('admin.depotgalon.view');
-    Route::get('/depot-galon/{id}/set-aktif', 'web\DepotGalonController@set_aktif')->name('admin.depotgalon.setaktif');
-    Route::get('/depot-galon/{id}/set-suspend', 'web\DepotGalonController@set_suspend')->name('admin.depotgalon.setsuspend');
-    Route::get('/depot-galon/{id}/get-data', 'web\DepotGalonController@get_data')->name('admin.depotgalon.getdata');
-    Route::post('/depot-galon/{id}/set-deposit', 'web\DepotGalonController@set_deposit')->name('admin.depotgalon.setdeposit');
+    Route::get('/depot-galon', 'Web\DepotGalonController@index')->name('admin.depotgalon');
+    Route::get('/depot-galon/{id}/view', 'Web\DepotGalonController@show_detail')->name('admin.depotgalon.view');
+    Route::get('/depot-galon/{id}/set-aktif', 'Web\DepotGalonController@set_aktif')->name('admin.depotgalon.setaktif');
+    Route::get('/depot-galon/{id}/set-suspend', 'Web\DepotGalonController@set_suspend')->name('admin.depotgalon.setsuspend');
+    Route::get('/depot-galon/{id}/get-data', 'Web\DepotGalonController@get_data')->name('admin.depotgalon.getdata');
+    Route::post('/depot-galon/{id}/set-deposit', 'Web\DepotGalonController@set_deposit')->name('admin.depotgalon.setdeposit');
 	
     Route::get('/serverside-depotgalon', [
         'as'   => 'serverside-depotgalon',
@@ -110,15 +110,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role']], function (
 
 
     // TIPE GALON
-    Route::get('/tipe-galon', 'web\TipeGalonController@index')->name('admin.tipegalon');
-    Route::post('/tipe-galon', 'web\TipeGalonController@store')->name('admin.tipegalon.store');
-    Route::get('/tipe-galon/{id}/setnonactive', 'web\TipeGalonController@setnonactive')->name('admin.tipegalon.setnonactive');
-    Route::get('/tipe-galon/{id}/restore', 'web\TipeGalonController@restore')->name('admin.tipegalon.restore');
+    Route::get('/tipe-galon', 'Web\TipeGalonController@index')->name('admin.tipegalon');
+    Route::post('/tipe-galon', 'Web\TipeGalonController@store')->name('admin.tipegalon.store');
+    Route::get('/tipe-galon/{id}/setnonactive', 'Web\TipeGalonController@setnonactive')->name('admin.tipegalon.setnonactive');
+    Route::get('/tipe-galon/{id}/restore', 'Web\TipeGalonController@restore')->name('admin.tipegalon.restore');
 
 
     // LOG DEPOSIT
-    Route::get('/log-deposit', 'web\DepositLogController@index')->name('admin.logdeposit');
-    Route::get('/log-deposit/{id}/get', 'web\DepositLogController@get_per_depot')->name('admin.logdeposit.perdepot');
+    Route::get('/log-deposit', 'Web\DepositLogController@index')->name('admin.logdeposit');
+    Route::get('/log-deposit/{id}/get', 'Web\DepositLogController@get_per_depot')->name('admin.logdeposit.perdepot');
     
     Route::get('/serverside-log-deposit', [
         'as'   => 'serverside-log-deposit',
@@ -133,7 +133,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role']], function (
 
 
     // ORDER
-    Route::get('/order-list', 'web\OrderController@index')->name('admin.orderlist');
+    Route::get('/order-list', 'Web\OrderController@index')->name('admin.orderlist');
 
     Route::get('/serverside-order-list', [
         'as'   => 'serverside-order-list',
@@ -149,7 +149,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role']], function (
 
 
     // ORDER LOG
-    Route::get('/order-log', 'web\OrderController@order_log')->name('admin.orderlog');
+    Route::get('/order-log', 'Web\OrderController@order_log')->name('admin.orderlog');
 
     Route::get('/serverside-order-log', [
         'as'   => 'serverside-order-log',
