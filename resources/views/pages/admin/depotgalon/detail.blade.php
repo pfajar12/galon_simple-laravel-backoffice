@@ -42,6 +42,15 @@
                             </div>
 
                             <div class="form-group">
+                                <label>Tipe Galon</label>
+                                <select multiple="multiple" class="form-control">
+                                    @foreach ($galon_type as $data)
+                                        <option>{{ $data->galon_type_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="form-group">
                                 <label>Alamat</label>
                                 <textarea class="form-control" readonly="readonly" rows="5">{{ $galon->address }}</textarea>
                             </div>

@@ -24,7 +24,14 @@ class DepotGalonController extends Controller
     function show_detail($id='')
     {
         $data = User::select('fullname', 'email', 'status', 'address', 'deposit', 'phone', 'latitude', 'longitude', 'created_at')->findOrFail($id);
-        return view('pages/admin/depotgalon/detail', ['page'=>$this->page, 'galon'=>$data, 'galon_id'=>$id]);
+
+        $galon_type = DB::table('tipe_galon_user as a')
+                        ->join('tipe_galon as b', 'a.galon_type_id', '=', 'b.id')
+                        ->select('b.galon_type_name')
+                        ->where('a.user_id', $id)
+                        ->get();
+
+        return view('pages/admin/depotgalon/detail', ['page'=>$this->page, 'galon'=>$data, 'galon_id'=>$id, 'galon_type'=>$galon_type]);
     }
 
     function set_aktif($id='', Request $request)

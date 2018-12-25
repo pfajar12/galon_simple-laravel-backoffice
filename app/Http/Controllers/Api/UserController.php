@@ -11,6 +11,7 @@ use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use DB;
 use Carbon\Carbon;
+use Validator;
 
 class UserController extends Controller
 {
@@ -23,11 +24,15 @@ class UserController extends Controller
 
     function profile_update(Request $request)
     {
-    	$validatedData = $request->validate([
-            'fullname' 	=> 'required|string',
-            'address' 	=> 'required|string',
-            'phone' 	=> 'required|string',
+        $validator = Validator::make($request->all(), [    
+            'fullname'  => 'required|string',
+            'address'   => 'required|string',
+            'phone'     => 'required|string',
         ]);
+
+        if ($validator->fails()) {
+            return ApiResponse::response(['success'=>-1, 'message'=>$validator->errors()->getMessages()]);
+        }
 
     	$id = $request->user()->id;
 
@@ -42,9 +47,15 @@ class UserController extends Controller
 
     function change_location(Request $request)
     {
-    	$validatedData = $request->validate([
-            'address' 	=> 'required|string',
+        $validator = Validator::make($request->all(), [    
+            'address'   => 'required|string',
+            'lat'       => 'required',
+            'lng'       => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return ApiResponse::response(['success'=>-1, 'message'=>$validator->errors()->getMessages()]);
+        }
 
     	$id = $request->user()->id;
 
@@ -59,6 +70,14 @@ class UserController extends Controller
 
     function set_galon_type(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'galon_type'    => 'required|array|min:1',
+        ]);
+
+        if ($validator->fails()) {
+            return ApiResponse::response(['success'=>-1, 'message'=>$validator->errors()->getMessages()]);
+        }
+
     	$id = $request->user()->id;
     	$galon_type = $request->json('galon_type');
     	$dataLength = count($galon_type);

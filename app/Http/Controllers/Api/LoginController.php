@@ -9,15 +9,20 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Validator;
 
 class LoginController extends Controller
 {
     function login(Request $request)
     {
-    	$validatedData = $request->validate([
-            'email' 	=> 'required|email',
-            'password' 	=> 'required',
+        $validator = Validator::make($request->all(), [    
+            'email'     => 'required|email',
+            'password'  => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return ApiResponse::response(['success'=>-1, 'message'=>$validator->errors()->getMessages()]);
+        }
 
         $credentials = [
             'email' => strtolower($request->email),

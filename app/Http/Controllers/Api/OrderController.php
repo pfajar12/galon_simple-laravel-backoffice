@@ -9,20 +9,45 @@ use App\User;
 use App\OrderLog;
 use App\Helpers\ApiResponse;
 use DB;
+use Validator;
 
 class OrderController extends Controller
 {
     function create_order(Request $request)
     {
+        if($request->current_location==1){
+            $validator = Validator::make($request->all(), [
+                'current_location'   => 'required',
+                'address'            => 'required',
+                'lat'                => 'required',
+                'lng'                => 'required',
+                'depot_id'           => 'required',
+                'galon_type'         => 'required',
+                'qty'                => 'required',
+            ]);
+        }
+        else{
+            $validator = Validator::make($request->all(), [
+                'current_location'   => 'required',
+                'depot_id'           => 'required',
+                'galon_type'         => 'required',
+                'qty'                => 'required',
+            ]);
+        }
+
+        if ($validator->fails()) {
+            return ApiResponse::response(['success'=>-1, 'message'=>$validator->errors()->getMessages()]);
+        }
+
     	if($request->json('current_location')==1){
     		$address = $request->json('address');
     		$lat 	 = $request->json('lat');
-    		$long 	 = $request->json('long');
+    		$long 	 = $request->json('lng');
     	}
     	else{
     		$address = $request->user()->address;
-    		$lat 	 = $request->user()->lat;
-    		$long 	 = $request->user()->long;
+    		$lat 	 = $request->user()->latitude;
+    		$long 	 = $request->user()->longitude;
     	}
 
     	$order = new Order;
@@ -66,6 +91,14 @@ class OrderController extends Controller
 
     function approve_order(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'order_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return ApiResponse::response(['success'=>-1, 'message'=>$validator->errors()->getMessages()]);
+        }
+
     	$order_id = $request->json('order_id');
     	$order = Order::find($order_id);
 
@@ -111,9 +144,14 @@ class OrderController extends Controller
 
     function cancel_order(Request $request)
     {
-    	$validatedData = $request->validate([
+         $validator = Validator::make($request->all(), [
+            'order_id'              => 'required',
             'reason_for_cancel' 	=> 'required|string',
         ]);
+
+        if ($validator->fails()) {
+            return ApiResponse::response(['success'=>-1, 'message'=>$validator->errors()->getMessages()]);
+        }
 
     	$order_id = $request->json('order_id');
     	$reason = $request->json('reason_for_cancel');
@@ -173,10 +211,24 @@ class OrderController extends Controller
     function search_depot(Request $request)
     {
         $lat        = $request->json('lat') ;
-        $long       = $request->json('long');
+        $long       = $request->json('lng');
         $galon_type = $request->json('galon_type');
+        $qty        = $request->json('qty');
+
+        $validator = Validator::make($request->all(), [    
+            'lat'           => 'required',
+            'lng'           => 'required',
+            'galon_type'    => 'required',
+            'qty'           => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return ApiResponse::response(['success'=>-1, 'message'=>$validator->errors()->getMessages()]);
+        }
 
         $getId = DB::table('tipe_galon_user')->select('user_id')->where('galon_type_id', $galon_type)->pluck('user_id');
+
+        $notExceedThanLimit = DB::table('order')->select('provider_id', DB::raw('count(provider_id) as total'))->groupBy('provider_id')->havingRaw('total >= 3')->pluck('provider_id');
 
         $data = User::query()
                     ->select('*', DB::raw('( 6371 * acos( cos( radians('.$lat.') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians('.$long.') ) + sin( radians('.$lat.') ) * sin( radians( latitude ) ) ) ) AS distance'))        
@@ -184,6 +236,7 @@ class OrderController extends Controller
                     ->where('role', 3)
                     ->where('deposit', '>', 0)
                     ->whereIn('id', $getId)
+                    ->whereNotIn('id', $notExceedThanLimit)
                     ->orderBy('distance', 'asc')
                     ->first();
         return ApiResponse::response(['success'=>0, 'data'=>$data]);
