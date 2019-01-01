@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\ApiResponse;
 use App\User;
+use App\TipeGalon;
 use Illuminate\Support\Facades\Auth;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -93,5 +94,11 @@ class UserController extends Controller
 
 
         return ApiResponse::response(['success'=>1, 'message'=>'set tipe galon berhasil']);
+    }
+
+    public function get_galon_type(Request $request)
+    {
+        $data = TipeGalon::select('id', 'galon_type_name')->where('status', 1)->get();
+        return ApiResponse::response(['success'=>1, 'galon_type'=>$data]);
     }
 }

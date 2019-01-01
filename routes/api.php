@@ -12,6 +12,8 @@ Route::group(['middleware' => ['api']], function(){
 	Route::post('/depot-list', 'Api\DepotController@show_list');
 	// search depot
 	Route::post('/search-depot', 'Api\OrderController@search_depot');
+	// get galon type
+	Route::post('/get-galon-type', 'Api\UserController@get_galon_type');
 
 
 	Route::group(['middleware' => ['jwt.auth']], function(){
