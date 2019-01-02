@@ -23,6 +23,7 @@ Route::group(['middleware' => ['api']], function(){
 		Route::post('/profile-update', 'Api\UserController@profile_update');
 		Route::post('/change-location', 'Api\UserController@change_location');
 		Route::post('/set-galon-type', 'Api\UserController@set_galon_type');
+		Route::post('/change-password', 'Api\UserController@change_password');
 
 		// order
 		Route::post('/order', 'Api\OrderController@create_order');

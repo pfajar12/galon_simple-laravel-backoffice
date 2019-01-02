@@ -13,6 +13,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use DB;
 use Carbon\Carbon;
 use Validator;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -92,7 +93,6 @@ class UserController extends Controller
 				]);
     	}
 
-
         return ApiResponse::response(['success'=>1, 'message'=>'set tipe galon berhasil']);
     }
 
@@ -100,5 +100,30 @@ class UserController extends Controller
     {
         $data = TipeGalon::select('id', 'galon_type_name')->where('status', 1)->get();
         return ApiResponse::response(['success'=>1, 'galon_type'=>$data]);
+    }
+
+    public function change_password(Request $request)
+    {
+        $id = $request->user()->id;
+        $validator = Validator::make($request->all(), [    
+            'old_password'               => 'required',
+            'new_password'               => 'required|confirmed',
+            'new_password_confirmation'  => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return ApiResponse::response(['success'=>-1, 'message'=>$validator->errors()->getMessages()]);
+        }
+
+        if(Hash::check($request->old_password, Auth::user()->password)){
+            $user = User::find($id);
+            $user->password = bcrypt($request->new_password);
+            $user->save();
+
+            return ApiResponse::response(['success'=>1, 'message'=>'password successfully updated']);
+        }
+        else{
+            return ApiResponse::response(['success'=>-11, 'message'=>'Your old password not matched']);
+        }
     }
 }
