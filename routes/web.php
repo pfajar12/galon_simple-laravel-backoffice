@@ -165,5 +165,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role']], function (
 
 
     Route::get('/inicobalohya', 'Web\OrderController@order_log')->name('admin.orderlog');
+    Route::get('/inicobalohya2', 'Web\OrderController@order_log')->name('admin.orderlog');
 });
 
