@@ -150,17 +150,20 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role']], function (
 
     // ORDER LOG
     Route::get('/order-log', 'Web\OrderController@order_log')->name('admin.orderlog');
-
+    
     Route::get('/serverside-order-log', [
         'as'   => 'serverside-order-log',
         'uses' => function () {
             $data = DB::table('order_log')
-                        ->join('users AS client', 'order_log.client_id', '=', 'client.id')
-                        ->join('users AS depot', 'order_log.galon_provider_id', '=', 'depot.id')
-                        ->join('tipe_galon', 'order_log.galon_type_id', '=', 'tipe_galon.id')
-                        ->select('client.fullname AS client_name', 'depot.fullname AS depot_name', 'tipe_galon.galon_type_name', 'order_log.qty', 'order_log.order_date', 'order_log.status');
+            ->join('users AS client', 'order_log.client_id', '=', 'client.id')
+            ->join('users AS depot', 'order_log.galon_provider_id', '=', 'depot.id')
+            ->join('tipe_galon', 'order_log.galon_type_id', '=', 'tipe_galon.id')
+            ->select('client.fullname AS client_name', 'depot.fullname AS depot_name', 'tipe_galon.galon_type_name', 'order_log.qty', 'order_log.order_date', 'order_log.status');
             return datatables()->query($data)->toJson();
         }
     ]);
+
+
+    Route::get('/inicobalohya', 'Web\OrderController@order_log')->name('admin.orderlog');
 });
 
